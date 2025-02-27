@@ -4,7 +4,7 @@ interface IThought extends Document {
     thoughtText: string;
     createdAt: Date;
     username: string;
-    reactions: [];
+    reactions: ObjectId[];
 }
 
 const thoughtSchema = new Schema<IThought>(
