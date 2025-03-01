@@ -11,7 +11,7 @@ interface IThought extends Document {
     thoughtText: string;
     createdAt: Date;
     username: string;
-    reactions: IReaction[];
+    reactions: typeof reactionSchema[];
 };
 
 const reactionSchema = new Schema<IReaction>(

@@ -74,7 +74,7 @@ export const updateThought = async (req: Request, res: Response) => {
 
 export const deleteThought = async (req: Request, res: Response) => {
     try {
-        const thought = Thought.findOneAndDelete({ _id: req.params.thoughtId })
+        const thought = await Thought.findOneAndDelete({ _id: req.params.thoughtId })
 
         if (!thought) {
             return res.status(404).json({ message: 'No thought with this ID found' });
@@ -90,9 +90,9 @@ export const deleteThought = async (req: Request, res: Response) => {
 
 export const createReaction = async (req: Request, res: Response) => {
     try {
-        const thought = Thought.findOneAndUpdate(
+        const thought = await Thought.findOneAndUpdate(
             { _id: req.params.thoughtId },
-            { $addToSet: { reactions: req.params.body } },
+            { $addToSet: { reactions: req.body } },
             { runValidators: true, new: true },
         );
 
