@@ -1,6 +1,7 @@
 import User from "../models/User.js";
 import { Request, Response } from 'express';
 
+//returns all users
 export const getUsers = async (_req: Request, res: Response) => {
     try {
         const users = await User.find();
@@ -12,6 +13,7 @@ export const getUsers = async (_req: Request, res: Response) => {
     }
 };
 
+//returns single user matching userId param
 export const getSingleUser = async (req: Request, res: Response) => {
     try {
         const user = await User.findOne({ _id: req.params.userId });
@@ -28,6 +30,7 @@ export const getSingleUser = async (req: Request, res: Response) => {
     }
 };
 
+//creates user with details from request body
 export const createUser = async (req: Request, res: Response) => {
     try {
         const user = await User.create(req.body);
@@ -38,6 +41,7 @@ export const createUser = async (req: Request, res: Response) => {
     }
 };
 
+//finds user matching userId param then updates properties with properties from the request body
 export const updateUser = async (req: Request, res: Response) => {
     try {
         const user = await User.findOneAndUpdate(
@@ -58,6 +62,7 @@ export const updateUser = async (req: Request, res: Response) => {
     }
 };
 
+//finds user matching userId param and deletes them
 export const deleteUser = async (req: Request, res: Response) => {
     try {
         const user = await User.findOneAndDelete({ _id: req.params.userId });
@@ -74,6 +79,7 @@ export const deleteUser = async (req: Request, res: Response) => {
     }
 };
 
+//finds user matching userId param then adds id from friendId param to user's friend list
 export const addFriend = async (req: Request, res: Response) => {
     try {
         const user = await User.findOneAndUpdate(
@@ -94,6 +100,7 @@ export const addFriend = async (req: Request, res: Response) => {
     }
 };
 
+//finds user matching userId param then removes id matching id from friendId param
 export const removeFriend = async (req: Request, res: Response) => {
     try {
         const user = await User.findOneAndUpdate(

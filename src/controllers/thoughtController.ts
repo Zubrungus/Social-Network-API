@@ -2,6 +2,7 @@ import Thought from "../models/Thought.js"
 import { Request, Response } from 'express';
 import User from "../models/User.js";
 
+//gets all thoughts
 export const getThoughts = async (_req: Request, res: Response) => {
     try {
         const thoughts = await Thought.find();
@@ -13,6 +14,7 @@ export const getThoughts = async (_req: Request, res: Response) => {
     }
 };
 
+//finds a single thought with ID matching the one in the URL
 export const getSingleThought = async (req: Request, res: Response) => {
     try {
         const thought = await Thought.findOne({ _id: req.params.thoughtId });
@@ -29,6 +31,7 @@ export const getSingleThought = async (req: Request, res: Response) => {
     }
 };
 
+//creates a thought with details matching those in the request body
 export const createThought = async (req: Request, res: Response) => {
     try {
         const thought = await Thought.create(req.body);
@@ -51,6 +54,7 @@ export const createThought = async (req: Request, res: Response) => {
     }
 };
 
+//finds a single thought matching the ID in the URL, and updates it with information from the request body
 export const updateThought = async (req: Request, res: Response) => {
     try {
         const thought = await Thought.findOneAndUpdate(
@@ -71,6 +75,7 @@ export const updateThought = async (req: Request, res: Response) => {
     }
 };
 
+//deletes thought matching ID from URL, and removes that thought from the user's thought list
 export const deleteThought = async (req: Request, res: Response) => {
     try {
         const thought = await Thought.findOneAndDelete({ _id: req.params.thoughtId });
@@ -93,6 +98,7 @@ export const deleteThought = async (req: Request, res: Response) => {
     }
 };
 
+//creates reaction to a thought matching the ID from the URL, reaction details will match those from the request body
 export const createReaction = async (req: Request, res: Response) => {
     try {
         const thought = await Thought.findOneAndUpdate(
@@ -113,6 +119,7 @@ export const createReaction = async (req: Request, res: Response) => {
     }
 };
 
+//finds thought matching thoughtId param from URL, then removes reaction matching reactionId param from URL
 export const deleteReaction = async (req: Request, res: Response) => {
     try {
         const thought = await Thought.findOneAndUpdate(

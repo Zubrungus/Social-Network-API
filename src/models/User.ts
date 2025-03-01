@@ -6,7 +6,7 @@ interface IUser extends Document {
     thoughts: ObjectId[];
     friends: ObjectId[];
 }
-
+//Properties of user schema. Uses a validator to ensure a valid email, and requires a unique username.
 const userSchema = new Schema<IUser>(
     {
         username: {
@@ -43,6 +43,7 @@ const userSchema = new Schema<IUser>(
     }
 );
 
+//virtual of the userSchema that computes and lists how many friends a user has upon query
 userSchema
     .virtual('friendCount')
     .get(function () {

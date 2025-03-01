@@ -3,7 +3,7 @@ import { getThoughts, getSingleThought, createThought, updateThought, deleteThou
 
 const router = Router();
 
-
+//All thought routes
 router.route('/')
     .get(getThoughts)
     .post(createThought);

@@ -14,6 +14,7 @@ interface IThought extends Document {
     reactions: typeof reactionSchema[];
 };
 
+//Properties of reaction and user schemas. Gives createdAt a default value of the current time, and formats it to a readable format upon query
 const reactionSchema = new Schema<IReaction>(
     {
         reactionId: {

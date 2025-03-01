@@ -3,6 +3,7 @@ import { getUsers, getSingleUser, createUser, updateUser, deleteUser, addFriend,
 
 const router = Router();
 
+//All user routes
 // /api/users
 router.route('/')
     .get(getUsers)
