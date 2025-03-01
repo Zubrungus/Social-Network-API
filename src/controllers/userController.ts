@@ -78,7 +78,7 @@ export const addFriend = async (req: Request, res: Response) => {
     try {
         const user = await User.findOneAndUpdate(
             { _id: req.params.userId },
-            { $addToSet: { friends: req.body } },
+            { $addToSet: { friends: req.params.userId } },
             { runValidators: true, new: true },
         );
 

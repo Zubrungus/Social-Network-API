@@ -1,5 +1,7 @@
 import Thought from "../models/Thought.js"
 import { Request, Response } from 'express';
+import User from "../models/User.js";
+import { ObjectId } from "mongoose";
 
 export const getThoughts = async (_req: Request, res: Response) => {
     try {
@@ -31,7 +33,19 @@ export const getSingleThought = async (req: Request, res: Response) => {
 export const createThought = async (req: Request, res: Response) => {
     try {
         const thought = await Thought.create(req.body);
+        
+        const user = await User.findOneAndUpdate(
+            {username: req.body.username},
+            {$addToSet: thought._id as ObjectId},
+            {runValidators: true, new: true},
+        );
+        
+        if(!user){
+            return res.status(404).json({ message: 'No user with this username found' });
+        }
+        
         res.json(thought);
+        return;
     } catch (err) {
         res.status(500).json(err);
         return;
@@ -78,7 +92,7 @@ export const createReaction = async (req: Request, res: Response) => {
     try {
         const thought = Thought.findOneAndUpdate(
             { _id: req.params.thoughtId },
-            { $addToSet: { reactions: req.body } },
+            { $addToSet: { reactions: req.params.body } },
             { runValidators: true, new: true },
         );
 
@@ -89,7 +103,7 @@ export const createReaction = async (req: Request, res: Response) => {
         res.json(thought);
         return;
     } catch (err) {
-        res.status(500).json(err);
+        res.status(500).json('Error: ' + err);
         return;
     }
 };
