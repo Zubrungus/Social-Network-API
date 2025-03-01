@@ -9,8 +9,18 @@ interface IUser extends Document {
 
 const userSchema = new Schema<IUser>(
     {
-        username: String,
-        email: String,
+        username: {
+            type: String,
+            required: true,
+            unique: true,
+            trim: true,
+        },
+        email: {
+            type: String,
+            required: true,
+            unique: true,
+            //email validation
+        },
         thoughts: [{
             type: Schema.Types.ObjectId,
             ref: 'Thought',

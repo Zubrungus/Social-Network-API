@@ -1,4 +1,4 @@
-import { Schema, model, Document, ObjectId } from 'mongoose';
+import { Schema, Types, model, Document, ObjectId } from 'mongoose';
 
 interface IReaction extends Document {
     reactionId: ObjectId;
@@ -16,22 +16,57 @@ interface IThought extends Document {
 
 const reactionSchema = new Schema<IReaction>(
     {
-        reactionId: String,
-        reactionBody: String,
-        username: String,
-        createdAt: { type: Date, default: Date.now },
+        reactionId: {
+            type: Schema.Types.ObjectId,
+            default: () => new Types.ObjectId(),
+        },
+        reactionBody: {
+            type: String,
+            required: true,
+            maxlength: 280,
+        },
+        username: {
+            type: String,
+            required: true,
+        },
+        createdAt: {
+            type: Date,
+            default: Date.now,
+            get: (timestamp: any) => {
+                return timestamp.toLocaleDateString();
+            },
+        },
+    },
+    {
+        toJSON: {
+            getters: true,
+        }
     }
 );
 
 const thoughtSchema = new Schema<IThought>(
     {
-        thoughtText: String,
-        createdAt: { type: Date, default: Date.now },
-        username: String,
+        thoughtText: {
+            type: String,
+            required: true,
+            maxlength: 280,
+        },
+        createdAt: {
+            type: Date,
+            default: Date.now,
+            get: (timestamp: any) => {
+                return timestamp.toLocaleDateString();
+            },
+        },
+        username: {
+            type: String,
+            required: true,
+        },
         reactions: [reactionSchema],
     },
     {
         toJSON: {
+            getters: true,
             virtuals: true,
         },
         id: false,
