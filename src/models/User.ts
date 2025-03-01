@@ -19,7 +19,12 @@ const userSchema = new Schema<IUser>(
             type: String,
             required: true,
             unique: true,
-            //email validation
+            validate: {
+                validator: function (value) {
+                    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value);
+                },
+                message: 'Invalid email address format',
+            },
         },
         thoughts: [{
             type: Schema.Types.ObjectId,
