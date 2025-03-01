@@ -1,7 +1,6 @@
 import Thought from "../models/Thought.js"
 import { Request, Response } from 'express';
 import User from "../models/User.js";
-import { ObjectId } from "mongoose";
 
 export const getThoughts = async (_req: Request, res: Response) => {
     try {
@@ -33,17 +32,17 @@ export const getSingleThought = async (req: Request, res: Response) => {
 export const createThought = async (req: Request, res: Response) => {
     try {
         const thought = await Thought.create(req.body);
-        
+
         const user = await User.findOneAndUpdate(
-            {username: req.body.username},
-            {$addToSet: thought._id as ObjectId},
-            {runValidators: true, new: true},
+            { username: req.body.username },
+            { $addToSet: { thoughts: thought._id } },
+            { runValidators: true, new: true },
         );
-        
-        if(!user){
+
+        if (!user) {
             return res.status(404).json({ message: 'No user with this username found' });
         }
-        
+
         res.json(thought);
         return;
     } catch (err) {
@@ -74,7 +73,13 @@ export const updateThought = async (req: Request, res: Response) => {
 
 export const deleteThought = async (req: Request, res: Response) => {
     try {
-        const thought = await Thought.findOneAndDelete({ _id: req.params.thoughtId })
+        const thought = await Thought.findOneAndDelete({ _id: req.params.thoughtId });
+
+        await User.findOneAndUpdate(
+            { username: thought?.username },
+            { $pull: { thoughts: req.params.thoughtId } },
+            { runValidators: true, new: true },
+        );
 
         if (!thought) {
             return res.status(404).json({ message: 'No thought with this ID found' });
